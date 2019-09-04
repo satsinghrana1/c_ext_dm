@@ -1,0 +1,123 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <style type="text/css">
+      body {
+        margin: 10px;
+        white-space: nowrap;
+      }
+      h1 {
+        font-size: 18px;
+      }
+      #container {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        /*margin-top: 20px;*/
+      }
+      #dropm-body{
+        width: 230px;
+        height: 140px;
+      }
+      .hidden{
+        display:none;
+      }
+      .popHeader{
+        /*background-color:rebeccapurple;*/
+        margin-top: 5px;
+        border-bottom:1px solid darkcyan;
+      }
+      .parah {
+        float: left;
+        width: 100%;
+        white-space: initial;
+        text-align: center;
+        font-weight: 700;
+        line-height: 1.5;
+        margin-top: 0;
+      }
+      .hidden{
+        margin-top: 20px;
+        width: 250px;
+        height: 113px;
+      }
+      .addProductBut {
+        width: 104px;
+        font-size: 13px;
+        margin: 0 auto;
+        border-radius: 5px;
+        padding: 6px 0px;
+        display: block;
+        cursor: pointer;
+        border: 2px solid darkcyan;
+        color: darkcyan;
+        font-weight: 600;
+        background: #fff;
+      }
+      #import-product
+      {
+        display: none;
+      }
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+  </head>
+
+  <body id="dropm-body">
+    <div class="popHeader"><img src="assets/images/logo-full.png"></div>
+    <div id="container">
+
+      <div id="otherPages" class="otherPages hidden">
+        <p class="parah">You can Import Products from Aliexpress using Drpom.</p>
+      </div>
+
+      <div id="minimumOrder" class="minimumOrder hidden">
+        <p class="parah">Only those products can be imported who does not requires minimum order.</p>
+      </div>
+
+      <div id="productPage" class="productPage hidden">
+        <p class="parah">Click add product button to import this product.</p>
+        <button id="addProduct" class="addProductBut proButton" type="button">Add Product</button>
+      </div>
+
+      <div id="askForLogin" class="askForLogin hidden">
+        <p class="parah">Please first login to Dropm to import product.</p>
+      </div>
+
+      <div id="importLoader" class="importLoader hidden">
+        <p class="parah">Importing product...</p>
+        <!-- <img src="assets/images/" /> -->
+      </div>
+
+      <div id="successImport" class="successImport hidden">
+        <p class="parah">Product has been imported to Dropm.</p>
+      </div>
+
+      <div id="errorImport" class="errorImport hidden">
+        <p class="parah">Importing product Failed at this time, Please try later.</p>
+      </div>
+
+      <div id="productImportError" class="productImport hidden">
+        <p class="parah" id="prodImpErrorP"></p>
+      </div>
+
+    </div>
+  </body>
+  <script src="js/jquery.js"></script>
+
+
+
+  <script src="popup.js"></script>  
+  <!-- <script src="js/product.js"></script> -->
+</html>

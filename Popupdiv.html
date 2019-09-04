@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.parent-div {
+        /* border: 2px solid #1b1919; */
+    width: 290px;
+    height: 190px;
+    float: right;
+    position: fixed;
+    right: 10px;
+    top: 20px;
+    border-radius: 10px;
+    background-color: #000000e8;
+    color: #fff;
+}
+.header {
+   font-size: 20px;
+    /* left: 59px; */
+    border-bottom: 1px solid #fff;
+    height: 25px;
+    padding: 15px;
+    padding-left: 20px;
+    padding-left: 10px;
+}
+img.img {
+    float: left;
+    /*border: 1px solid #333;*/
+    width: 25px;
+    height: 23px;
+}
+.heading-name {
+    width: 100px;
+    /*border: 1px solid;*/
+    float: left;
+    padding-left: 10px;
+}
+.cross {
+    /*border: 1px solid;*/
+    width: 20px;
+    float: right;
+}
+
+.body-div {
+    align-items: center;
+    margin: 0 auto 0 auto;
+}
+
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="parent-div blink"> 
+		<div class="header"><img src="small_logo.png" alt="er" class="img">
+			<div class="heading-name">dropm</div><div class="cross">*</div></div>
+		<legend></legend>
+		<div class="body-div" hidden>product is imported</div>
+		<div class="login-first" > Please login to app.dropmarket.net and try again</div>
+
+
+	</div>
+	<script type="text/javascript">
+		function blink(selector){
+$(selector).fadeOut(2000, function(){
+    $(this).fadeIn(2000, function(){
+        blink(this);
+    });
+});
+}
+
+blink('.blink');
+	</script>
+
+</body>
+</html>

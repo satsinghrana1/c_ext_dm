@@ -1,0 +1,68 @@
+{
+	"extensionName":{
+		"message": "Dropmarket"
+	},
+	"extensionDescription": {
+      "message": "This extension allows the user to import products from Aliexpress and Dhgate."
+   },
+	"importingProduct":{
+		"message": "IMPORTING PRODUCT"
+	},
+	"errorInImporting":{
+		"message": "IMPORTING PRODUCT"
+	},
+	"importingSuccess":{
+		"message": "PRODUCT SUCCESSFULLY IMPORTED"
+	},
+	"unknownError":{
+		"message": "Unknown error ocured please try again."
+	},
+	"waitingPageLoad":{
+		"message": "Waiting for page load."		
+	},
+	"somethingWentWrong":{
+		"message": "Something went wrong please try again."
+	},
+	"productPostingFailed":{
+		"message": "Product posting is failed please try again."
+	},
+	"creatinNewAddress":{
+		"message": "Adding customer address."
+	},
+	"addressFull":{
+		"message": "Address are full on aliexpress going to delete the old addresses."
+	}			
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
