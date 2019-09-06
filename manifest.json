@@ -13,6 +13,10 @@
     {
       "matches": ["*://app-stage.dropmarket.net/*", "*://*.dhgate.com/*" ],
       "js": ["js/jquery.js","js/jq-cookie.js","js/dm-order-process-dh.js","js/dm-common.js"]
+    },
+    {
+      "matches": ["*://app-stage.dropmarket.net/*"],
+      "js": ["js/jquery.js","js/jq-cookie.js","js/home.js"]
     }       
   ],
   "default_locale": "en",
