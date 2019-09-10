@@ -2,13 +2,13 @@
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "1.1.2",
+  "version": "1.1.5",
   "web_accessible_resources": ["assets/images/logo-full.png", "en/messages.json"],
   "browser_action": { "default_icon": "assets/images/icon1.png", "default_popup": "popup.html" },
   "content_scripts": [
     {
       "matches": ["*://app-stage.dropmarket.net/*", "*://*.aliexpress.com/item/*", "*://*.aliexpress.com/*", "*://shoppingcart.aliexpress.com/*", "*://login.aliexpress.com/*" ],
-      "js": ["js/jquery.js","js/jq-cookie.js","js/dm-order-process-ali.js","js/dm-common.js"]
+      "js": ["js/jquery.js","js/jq-cookie.js", "js/dm-order-process-ali.js", "js/dm-order-process-dh.js", "js/dm-common.js"]
     },
     {
       "matches": ["*://app-stage.dropmarket.net/*", "*://*.dhgate.com/*" ],

@@ -13,19 +13,14 @@
     }
 
     var store_id = readCookie('dm_store_id');
-
-
-    var items = {};
+    var items    = {};
         items["store_id"] = store_id;
-
-    console.log(items);
-
-        
+    
         chrome.storage.sync.set(items);
 
-    // ExtensionAvailable = document.createElement('div');
-    // ExtensionAvailable.setAttribute("id", "dropmExtensionAvailable");
-    // document.body.appendChild(ExtensionAvailable); 
+    ExtensionAvailable = document.createElement('div');
+    ExtensionAvailable.setAttribute("id", "dropmExtensionAvailable");
+    document.body.appendChild(ExtensionAvailable); 
 
     
 })();

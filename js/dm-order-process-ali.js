@@ -11,7 +11,7 @@ function pageFullyLoaded(){
 
         // Fetching animation.
 
-        if (window.location.href.indexOf('dropmarket.net/order-product.php?order_id') > -1) {
+        if (window.location.href.indexOf('dropmarket.net/order-product-ali.php?order_id') > -1) {
 
             $('body').append('<div style="width: 100%;max-width: 413px;padding: 10px;font-family: sans-serif;position: relative;"><span>Fetching order details</span><span class="fetching-p"></span></div>');
 
@@ -51,7 +51,7 @@ function pageFullyLoaded(){
         // Inform the background page to perform an action.
         var port = chrome.extension.connect({name: "Dm extension communication bridge"});
 
-        var dropm = {
+        var dropm_ali = {
             main_id : null,
             _process_state : null,
             init : function (ev, btn_obj) {
@@ -60,11 +60,11 @@ function pageFullyLoaded(){
                     
                     if ($.isEmptyObject(item)) {
                         
-                        dropm.main_id = dropm.identity();
+                        dropm_ali.main_id = dropm_ali.identity();
 
-                        chrome.storage.sync.set( { 'order_process' : dropm.main_id+'start_at'+new Date() } );
+                        chrome.storage.sync.set( { 'order_process' : dropm_ali.main_id+'start_at'+new Date() } );
                         
-                        dropm.update_state('dm_order_button_click');
+                        dropm_ali.update_state('dm_order_button_click');
                         
                         var link = $(btn_obj).attr("href");
                         
@@ -92,11 +92,11 @@ function pageFullyLoaded(){
                             // An in complete order process with max time exist Remove it and go for order.
                             chrome.storage.sync.clear();
 
-                            dropm.main_id = dropm.identity();
+                            dropm_ali.main_id = dropm_ali.identity();
 
-                            chrome.storage.sync.set( { 'order_process' : dropm.main_id+'start_at'+new Date() } );
+                            chrome.storage.sync.set( { 'order_process' : dropm_ali.main_id+'start_at'+new Date() } );
                             
-                            dropm.update_state('dm_order_button_click');
+                            dropm_ali.update_state('dm_order_button_click');
                             
                             var link = $(btn_obj).attr("href");
                             
@@ -112,7 +112,7 @@ function pageFullyLoaded(){
                             },10);
 
                         } else {
-                            dropm._message('An order is already in progress. <br>Try to order after few seconds.', 3, 3);
+                            dropm_ali._message('An order is already in progress. <br>Try to order after few seconds.', 3, 3);
                         }
                     }
                 });
@@ -143,7 +143,7 @@ function pageFullyLoaded(){
                     fa_icon = '<i class="fa fa-exclamation-triangle" style="font-size: 14px;position: relative;top: -17px;right: -15px;color: rgba(223, 22, 87, 0.67);border: 2px solid;border-radius: 17px;padding: 6px 6px;"></i>';
                 }
 
-                var id = dropm.identity();
+                var id = dropm_ali.identity();
             
                 var block = '';
             
@@ -175,7 +175,7 @@ function pageFullyLoaded(){
 
                     if ( undefined != items.order_process ) {
 
-                        if (dropm.its('dropmarket.net/orderHistory.php')) {
+                        if (dropm_ali.its('dropmarket.net/orderHistory.php')) {
                             
                             var start_at = items.order_process.split('start_at')[1];
 
@@ -188,11 +188,11 @@ function pageFullyLoaded(){
                             if (res > max_process_time) {
                                 // An in-complete order process with max time exist Remove it and go for order.
                                 chrome.storage.sync.clear();
-                                dropm._message( 'You can order product now',3,3 );
+                                dropm_ali._message( 'You can order product now',3,3 );
                                 return;
                             } else {
                                 console.log('HERE in');
-                                dropm._message('An order is already in progress. <br>Try to order after few seconds.', 3, 3);
+                                dropm_ali._message('An order is already in progress. <br>Try to order after few seconds.', 3, 3);
                                 return;
                             }
                         }
@@ -205,12 +205,12 @@ function pageFullyLoaded(){
                             }
                         });
                         
-                        dropm._process_state = c_s;
-                        dropm.go_next();
+                        dropm_ali._process_state = c_s;
+                        dropm_ali.go_next();
 
                     } else {
-                        if(dropm.its('https://app-stage.dropmarket.net/orderHistory.php')) {
-                            dropm._message( 'You can order product now',3,3 );
+                        if(dropm_ali.its('https://app-stage.dropmarket.net/orderHistory.php')) {
+                            dropm_ali._message( 'You can order product now',3,3 );
                         }
                     }                    
                 });
@@ -222,7 +222,7 @@ function pageFullyLoaded(){
                     
                     if ( success == true) {
                         
-                        dropm.update_state('dm_fill_order_note');
+                        dropm_ali.update_state('dm_fill_order_note');
                         window.location.reload();
 
                     } else{
@@ -392,9 +392,9 @@ function pageFullyLoaded(){
                         }, 1500);
                         
                         setTimeout(() => {
-                            dropm._message('<div style="padding: 5px 5px 5px 5px;margin-bottom: 15px;">Unable to set shipping address. <br>Please fill the required details<br></div>'+errors, 0, 4);
+                            dropm_ali._message('<div style="padding: 5px 5px 5px 5px;margin-bottom: 15px;">Unable to set shipping address. <br>Please fill the required details<br></div>'+errors, 0, 4);
                             $('#dm-progress-message img').css('top',0);
-                            dropm._show_shipping_address();
+                            dropm_ali._show_shipping_address();
                             // Clear the process data from chrome storage.
                             chrome.storage.sync.clear();
                         }, 1800);
@@ -495,9 +495,9 @@ function pageFullyLoaded(){
             },
             go_next : function () {
                 
-                if ( dropm._process_state == 'dm_order_button_click' ) {
+                if ( dropm_ali._process_state == 'dm_order_button_click' ) {
 
-                    if (dropm.its('app-stage.dropmarket.net/order-product.php')) {
+                    if (dropm_ali.its('app-stage.dropmarket.net/order-product-ali.php')) {
                         
                         // Set order data into chrome storage.
                         var order_cookie_data = '';
@@ -521,79 +521,73 @@ function pageFullyLoaded(){
     
                                        
                         chrome.storage.sync.set({'order_data': jsonObj});                    
-                        dropm.update_state('dm_check_aliexpress_login');
+                        dropm_ali.update_state('dm_check_aliexpress_login');
                         
                     }
 
                     
                 }
-                if ( dropm._process_state == 'dm_check_aliexpress_login' ) {
+                if ( dropm_ali._process_state == 'dm_check_aliexpress_login' ) {
 
-                    if (dropm.its('aliexpress.com')) {
+                    if (dropm_ali.its('aliexpress.com')) {
                         
-                        var is_login = dropm.check_aliexpress_login();
+                        var is_login = dropm_ali.check_aliexpress_login();
     
                         if (is_login) {
                             
-                            dropm._message('Aliexpress login pass.',0,0);
-
-                            // return
+                            dropm_ali._message('Aliexpress login pass.',0,0);
                             
-                            dropm.update_state( 'dm_check_cart_status' );
+                            dropm_ali.update_state( 'dm_check_cart_status' );
     
                             window.location.href = 'https://shoppingcart.aliexpress.com/shopcart/shopcartDetail.htm';
                             
                         } else {
                             
-                            dropm._message('Please login to your Aliexpress account. Order process will continue thereafter.',0,3);
+                            dropm_ali._message('Please login to your Aliexpress account. Order process will continue thereafter.',0,3);
     
                         }
                     }
                 }
+                if ( dropm_ali._process_state == 'dm_check_cart_status' ) {
 
-                if ( dropm._process_state == 'dm_check_cart_status' ) {
-
-                    if (dropm.its('shoppingcart.aliexpress.com/shopcart/shopcartDetail.htm')) {
+                    if (dropm_ali.its('shoppingcart.aliexpress.com/shopcart/shopcartDetail.htm')) {
                         
-                        dropm._message('Analyzing the cart.',0,1);
+                        dropm_ali._message('Analyzing the cart.',0,1);
                         
-                        dropm.analyze_cart();
+                        dropm_ali.analyze_cart();
 
                     }
 
                 }
+                if ( dropm_ali._process_state == 'dm_add_to_cart' ) {
 
-                if ( dropm._process_state == 'dm_add_to_cart' ) {
+                    if (dropm_ali.its('shoppingcart.aliexpress.com/shopcart/shopcartDetail.htm')) {
 
-                    if (dropm.its('shoppingcart.aliexpress.com/shopcart/shopcartDetail.htm')) {
+                        dropm_ali._message('Adding product to cart.',0,1);
 
-                        dropm._message('Adding product to cart.',0,1);
-
-                        dropm.add_to_cart();
+                        dropm_ali.add_to_cart();
                     }
 
                 }
+                if ( dropm_ali._process_state == 'dm_check_address_status' ) {
 
-                if ( dropm._process_state == 'dm_check_address_status' ) {
+                    if (dropm_ali.its('shoppingcart.aliexpress.com/order/confirm_order.htm')) {
 
-                    if (dropm.its('shoppingcart.aliexpress.com/order/confirm_order.htm')) {
+                        dropm_ali._message('Analyzing the shipping address');
 
-                        dropm._message('Analyzing the shipping address');
-
-                        dropm.check_shipping_address();
+                        dropm_ali.check_shipping_address();
                     }
                     
                 }
+                if ( dropm_ali._process_state == 'dm_fill_order_note') {
 
-                if ( dropm._process_state == 'dm_fill_order_note') {
-
-                    if (dropm.its('https://shoppingcart.aliexpress.com/order/confirm_order.htm')) {
+                    if (dropm_ali.its('https://shoppingcart.aliexpress.com/order/confirm_order.htm')) {
 
                         chrome.storage.sync.get('order_data', function ( item ) {
 
-                            dropm.dm_fill_order_note( item.order_data.note );
+                            dropm_ali.dm_fill_order_note( item.order_data.note );
                             
-                            dropm._message('Please verify the details and place the order.',0,2);
+                            dropm_ali._message('Please verify the details and place the order.',0,2);
 
                             // Any excess message.
                             var aem = '';
@@ -706,11 +700,11 @@ function pageFullyLoaded(){
                         } 
                     },
                     error : function(err,e){
-                        dropm._message('Error: While checking cart items.');
+                        dropm_ali._message('Error: While checking cart items.');
                     }
                 });
 
-                dropm.update_state('dm_add_to_cart');
+                dropm_ali.update_state('dm_add_to_cart');
                 
                 window.location.reload();
                 
@@ -741,7 +735,7 @@ function pageFullyLoaded(){
                     var cf  = 'main_details';
                     var sk  = order_data.sku_attr;
                     var ski = order_data.sku_id;
-                    var t   = dropm.aliexpress_csrf_token();
+                    var t   = dropm_ali.aliexpress_csrf_token();
                     var cb  = '__jp8';
                     var u   = 'https://shoppingcart.aliexpress.com/addToShopcart4Js.htm';
 
@@ -779,9 +773,9 @@ function pageFullyLoaded(){
                         },
                         success: function(res){
 
-                            dropm._message('Product added to cart',0,2);
+                            dropm_ali._message('Product added to cart',0,2);
 
-                            dropm.update_state('dm_check_address_status');
+                            dropm_ali.update_state('dm_check_address_status');
 
                             var product_data = {'objectId'        : pi, 
                                                 'from'            : 'aliexpress', 
@@ -864,7 +858,7 @@ function pageFullyLoaded(){
                             
                             chrome.storage.sync.get('order_data', function(item){
 
-                                item.order_data.shipping_address._csrf_token_ = dropm.aliexpress_csrf_token();
+                                item.order_data.shipping_address._csrf_token_ = dropm_ali.aliexpress_csrf_token();
                                 
                                 port.postMessage(['create-aliexpress-address', item.order_data]);
 
@@ -877,7 +871,7 @@ function pageFullyLoaded(){
                             
                             $.each(res.shipping.availableShippingMethods, function(a,b) {
                                 
-                                dropm.delete_shipping_address(b.shippingMethodId);
+                                dropm_ali.delete_shipping_address(b.shippingMethodId);
 
                                 deleted_shipping_addresses++;
 
@@ -887,7 +881,7 @@ function pageFullyLoaded(){
 
                                         console.log(item.order_data.shipping_address);
                                         
-                                        item.order_data.shipping_address._csrf_token_ = dropm.aliexpress_csrf_token();
+                                        item.order_data.shipping_address._csrf_token_ = dropm_ali.aliexpress_csrf_token();
 
                                         port.postMessage(['create-aliexpress-address', item.order_data]);
         
@@ -901,7 +895,7 @@ function pageFullyLoaded(){
                     },
                     error : function(e,r){
 
-                        dropm._message('Error at checking shipping address please try to reorder the product.');
+                        dropm_ali._message('Error at checking shipping address please try to reorder the product.');
                         // Clear the chrome storage.
                         chrome.storage.sync.clear();
 
@@ -964,7 +958,7 @@ function pageFullyLoaded(){
             },
             delete_shipping_address : function ( id ) {
 
-                var crs = dropm.aliexpress_csrf_token();
+                var crs = dropm_ali.aliexpress_csrf_token();
 	
                 var deleteAddress = 'https://ilogisticsaddress.aliexpress.com/ajaxDeleteLogisticsAddress.htm?addressId='+id+'&_csrf_token_='+crs;
 
@@ -982,11 +976,16 @@ function pageFullyLoaded(){
             }
         };
 
-        dropm.process_observer();
+        dropm_ali.process_observer();
+
+
 
         $('.orderBtn').click(function(ev) {
-            dropm.init(ev, this);
+            if($(this).data('supplier') == 'ali'){
+                dropm_ali.init(ev, this);
+            }
         });
+
 
         // Minor functionalities
         $(document).on('mouseover', '#dm-progress-message', function () {

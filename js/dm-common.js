@@ -278,6 +278,9 @@ function pageFullyLoaded(){
 
             $(document).on("click", ".floating-icon-img", function(){
 
+                var product_title      = $('.hinfo h1').text();                
+                var product_main_image = 'https:'+$('#simgList img').eq(0).attr('src').replace('/100x100/','/');
+
                 chrome.storage.sync.get('store_id', function(item){
 
                     console.log(item);
@@ -285,8 +288,8 @@ function pageFullyLoaded(){
                     if ($.isEmptyObject(item)) {
 
                         noti = '<div class="notifybox"><span class="closeNotify crossBtn"><i class="fa fa-times"></i></span>';
-                        noti += '<p class="importing-message"><i class="fa fa-spinner fa-spin" style="font-size:15px"></i> Login required</p>';
-                        noti += '<div class="loading-imgHolder"><img style="height:33px;position:relative;top:1px" src="'+dm_icon+'"></div>';
+                        noti += '<p class="importing-message"><span style="color: #ca0673;font-weight: bold;">Login required.</span></p>';
+                        noti += '<div class="loading-imgHolder"><img class="importing-product-img img-responsive" src="'+product_main_image+'" /></div>';
                         noti += '<div class="pro-detail">Please login to <b>app.dropmarket.net</b></div></div>';
 
                         var notify    = doc.createElement("div"); 
@@ -301,17 +304,14 @@ function pageFullyLoaded(){
                             element.parentNode.removeChild(element);
                         }
 
-                        $(".importing-message").html("<span style='color: #ca0673;font-weight: bold;'>Login required.</span>");
-                        $(".loading-product-title").text('Please login to <b>app.dropmarket.net</b>');
-
                     }else {
 
-
+                        // Login check.
                         if (item.store_id == null) {
 
                             noti = '<div class="notifybox"><span class="closeNotify crossBtn"><i class="fa fa-times"></i></span>';
-                            noti += '<p class="importing-message"><i class="fa fa-spinner fa-spin" style="font-size:15px"></i> Login required</p>';
-                            noti += '<div class="loading-imgHolder"><img style="height:33px;position:relative;top:1px" src="'+dm_icon+'"></div>';
+                            noti += '<p class="importing-message"><span style="color: #ca0673;font-weight: bold;">Login required.</span></p>';
+                            noti += '<div class="loading-imgHolder"><img class="importing-product-img img-responsive" src="'+product_main_image+'" /></div>';
                             noti += '<div class="pro-detail">Please login to <b>app.dropmarket.net</b></div></div>';
 
                             var notify    = doc.createElement("div"); 
@@ -325,21 +325,19 @@ function pageFullyLoaded(){
                                 var element = document.getElementById("product-importing-notify");
                                 element.parentNode.removeChild(element);
                             }
-
-                            $(".importing-message").html("<span style='color: #ca0673;font-weight: bold;'>Login required.</span>");
-                            $(".loading-product-title").text('Please login to <b>app.dropmarket.net</b>');
                             return;
-                            
                         }
 
+
+                        // Quantity check.
                         var default_quantity = $('#defaultQuantity').val();
 
                         if (default_quantity != 1) {
 
                             noti = '<div class="notifybox"><span class="closeNotify crossBtn"><i class="fa fa-times"></i></span>';
-                            noti += '<p class="importing-message"><i class="fa fa-spinner fa-spin" style="font-size:15px"></i> Error!</p>';
-                            noti += '<div class="loading-imgHolder"><img style="height:33px;position:relative;top:1px" src="'+dm_icon+'"></div>';
-                            noti += '<div class="pro-detail">Product with minimum quantity required 1 can be imported.</div></div>';
+                            noti += '<p class="importing-message"><span style="color: #ca0673;font-weight: bold;">Error!.</span></p>';
+                            noti += '<div class="loading-imgHolder"><img class="importing-product-img img-responsive" src="'+product_main_image+'" /></div>';
+                            noti += '<div class="pro-detail">Product with minimum quantity required more then 1 can\'t be imported.</div></div>';
 
                             var notify    = doc.createElement("div"); 
                                 notify.id = "product-importing-notify";
@@ -352,16 +350,12 @@ function pageFullyLoaded(){
                                 var element = document.getElementById("product-importing-notify");
                                 element.parentNode.removeChild(element);
                             }
-
-                            $(".importing-message").html("<span style='color: #ca0673;font-weight: bold;'>error!</span>");
-                            $(".loading-product-title").text('Product with minimum quantity required 1 can be imported.</b>');
-                            return;
+                            return
                         }
+
 
                         // Dropmarket login ok.
                         var product_url        = window.location.href.substring(0, (window.location.href.indexOf('.html')+5) );
-                        var product_title      = $('.hinfo h1').text();                
-                        var product_main_image = 'https:'+$('#simgList img').eq(0).attr('src').replace('/100x100/','/');
                         var product_id         = null;
                         var md5product_id      = $('#productid').val();
                         var product_images     = [];
@@ -373,32 +367,38 @@ function pageFullyLoaded(){
                             
                         if (null != found) {
                             product_id = found[0].replace("identifier: '",'').replace("',",'');
-                        
                         }
 
 
                         product_specification += '<ul>';
-                        $.each( $('.item-specifics.js-item-specifics ul li'), function(i,d){
                             
-                            product_specification += '<li><b>'+$(d).find('strong').text()+'</b>  '+$(d).find('.des-wrap').contents().unwrap().html()+'</li>';
+                        $.each( $('.item-specifics.js-item-specifics ul li'), function(i,d){
+                            console.log(d);
 
+                            var title = $(d).find('strong').text();
+                            var value = $(d).find('.des-wrap').html().replace(/<b>/g,'').replace(/<\/b>/g,'').replace(/&nbsp;/g,'');
+
+                            // replace(/\+/g, ' ');
+                            console.log(value)
+
+                            product_specification += '<li><b>'+title+'</b>'+value+'</li>';
+                            // product_specification += '<li>'+$(d).find('strong').contents().unwrap().html()+'</li>';
                         });
+
                         product_specification += '</ul>';
 
 
                         $.each($('#simgList li img'), function(i,d){
-                            
                             product_images.push( $(d).attr('src').replace('100x100','0x0') );
-
                         });
 
                         var price = 0.00;
                             price = $('.js-wholesale-list li').eq(0).attr('price');
                         
-                            var all_data              = [];
-                            var variant_images        = [];
-                            var variant_id_name       = [];
-                            var variant_images_status = 0;
+                            var all_data                = [];
+                            var variant_images          = [];
+                            var variant_id_name         = [];
+                            var variant_images_status   = 0;
                             var variant_images_with_sku = [];
 
                             $.each($('.js-selectionWrapper'), function (i, d) {
@@ -449,10 +449,24 @@ function pageFullyLoaded(){
 
                             if (all_data.length > 3) {
                                 
-                                alert(' Product with more then 3 options can\'t be imported per Shopify\'s settings.');
-                                return
-                            }
+                                noti = '<div class="notifybox"><span class="closeNotify crossBtn"><i class="fa fa-times"></i></span>';
+                                noti += '<p class="importing-message"><span style="color: #ca0673;font-weight: bold;">error!</span></p>';
+                                noti += '<div class="loading-imgHolder"><img style="height:33px;position:relative;top:1px" src="'+product_main_image+'"></div>';
+                                noti += '<div class="pro-detail">Product with more then 3 options can\'t be imported as per Shopify\'s settings.</div></div>';
 
+                                var notify    = doc.createElement("div"); 
+                                    notify.id = "product-importing-notify";
+
+                                body.appendChild(notify);
+                                notify.innerHTML = noti;
+
+                                var closeNotifyBtn   = doc.getElementsByClassName('crossBtn');
+                                closeNotifyBtn[0].onclick = function(){
+                                    var element = document.getElementById("product-importing-notify");
+                                    element.parentNode.removeChild(element);
+                                }
+                                return;
+                            }
 
                             if(all_data >0){
 
@@ -492,23 +506,20 @@ function pageFullyLoaded(){
     
                                 }
                             }
-
-
-
                         
-                        var product_data = { 
-                            md5product_id : md5product_id, 
-                            price : price, 
-                            product_url : product_url, 
-                            product_id : product_id, 
-                            product_main_image : product_main_image, 
-                            product_title : product_title,
-                            product_images : JSON.stringify( product_images ),
-                            variant_data : JSON.stringify( final_variant ),
-                            variant_images_with_sku : JSON.stringify( variant_images_with_sku ),
-                            variant_images_status : variant_images_status,
-                            product_specification : product_specification
-                        };
+                            var product_data = { 
+                                md5product_id : md5product_id, 
+                                price : price, 
+                                product_url : product_url, 
+                                product_id : product_id, 
+                                product_main_image : product_main_image, 
+                                product_title : product_title,
+                                product_images : JSON.stringify( product_images ),
+                                variant_data : JSON.stringify( final_variant ),
+                                variant_images_with_sku : JSON.stringify( variant_images_with_sku ),
+                                variant_images_status : variant_images_status,
+                                product_specification : product_specification
+                            };
         
                         noti = '<div class="notifybox"><span class="closeNotify crossBtn"><i class="fa fa-times"></i></span>';
                         noti += '<p class="importing-message"><i class="fa fa-spinner fa-spin" style="font-size:15px"></i> IMPORTING PRODUCT</p>';
@@ -531,9 +542,9 @@ function pageFullyLoaded(){
                             url : app_url+'/product-import/import-dhgate-product.php',
                             method : 'POST',
                             data : product_data,
-                            beforeSend : function(xhr) {},
                             success : function(response) {
-                                
+
+                                response = response.replace('_start', '');
                                 if (response == "already exist in importlist") {
                                     $(".importing-message").html("<span style='color: #ca0673;font-weight: bold;'>Error!</span>");
                                     $(".loading-product-title").text('The product is already in your import list.');
@@ -546,23 +557,26 @@ function pageFullyLoaded(){
                                     $(".importing-message").html('<i class="fa fa-check" style="font-size:15px;margin-right: 3px;float: left;"></i>PRODUCT SUCCESSFULLY IMPORTED');
                                     $(".loading-product-title").text(product_title);
                                 }
-                                if (response == "Max product import reached") {
+                                if (response == "max product import reached") {
                                     $(".importing-message").html("<span style='color: #ca0673;font-weight: bold;'>Error!</span>");
-                                    $(".loading-product-title").text('You have reached the max of 500 products in your Import List.');
+                                    $(".loading-product-title").text('You have reached the max limit of 10 products in your Import List.');
                                 }
+                                if (response == "login required") {
+                                    $(".importing-message").html("<span style='color: #ca0673;font-weight: bold;'>Error!</span>");
+                                    $(".loading-product-title").html('You need to login at <b>app.dropmarket.net</b>.');
+                                }
+
                             },
                             error : function(e,x){
                                 console.log('Inside error')
                                 console.log(e)
                                 console.log(x)
-
                             }
                         }); 
                     }
-
-                })
+                
+                });
             });
-
         }
 
     });
