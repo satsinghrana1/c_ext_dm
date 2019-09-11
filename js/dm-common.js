@@ -44,7 +44,7 @@ function pageFullyLoaded(){
         }
 
         // Add aliexpress import icon.
-        if (location.indexOf('aliexpress.com/item/') > -1) {
+        if (location.indexOf('aliexpress.com/item/') > -1 || location.indexOf('aliexpress.com/store/product/') > -1  ) {
             
             var product_image     = $('.images-view-wrap .images-view-list li img').eq(0).attr('src').replace('_50x50.jpg','');
             var no_variant        = 0;            
@@ -407,15 +407,15 @@ function pageFullyLoaded(){
                                 
                                 $.each($(d).find('li'), function(li_i, li_d){
 
-                                    small_array.push($(li_d).attr('attrvalid'));                                  
+                                    small_array.push($(li_d).attr('attrid'));                                  
 
-                                    if ($(li_d).data('bimg')) {
+                                    if ($(li_d).find('img').length > 0) {
 
                                         variant_images_status = 1;
                                         
-                                        variant_images.push( $(li_d).attr( 'attrvalid')+'-dmDivider-'+'https:'+$(li_d).data('bimg') );
+                                        variant_images.push( $(li_d).attr( 'attrvalid')+'-dmDivider-'+'https:'+$(li_d).find('img').attr('src') );
 
-                                        variant_images_with_sku.push( $(li_d).attr( 'attrvalid' )+'-dmDivider-'+'https:'+$(li_d).data( 'bimg' ) );
+                                        variant_images_with_sku.push( $(li_d).attr( 'attrvalid' )+'-dmDivider-'+'https:'+$(li_d).find('img').attr('src') );
                                         
                                     }
 
@@ -426,6 +426,8 @@ function pageFullyLoaded(){
                                 all_data.push( small_array );
                                 
                             });
+
+                            console.log(all_data)
 
                             // Combination maker.
                             function allPossibleCases(arr) {
@@ -470,7 +472,8 @@ function pageFullyLoaded(){
 
                             if(all_data >0){
 
-                                var variant_data  = allPossibleCases(all_data).sort();
+                                // var variant_data  = allPossibleCases(all_data).sort();
+                                var variant_data  = allPossibleCases(all_data);
                                 var final_variant = [];
     
                                 if (variant_images.length > 0) {
@@ -506,6 +509,45 @@ function pageFullyLoaded(){
     
                                 }
                             }
+
+                            var all_option_index = [];
+
+                            var option1_index = [];
+                            var option2_index = [];
+                            var option3_index = [];
+
+                            $.each($('#listBuy_1 li'), function (i,d) {                               
+                                option1_index.push($(d).attr('attrvalid'));
+                            });
+
+                            $.each($('#listBuy_2 li'), function (i,d) {
+                                option2_index.push($(d).attr('attrvalid'));                                
+                            });
+
+                            $.each($('#listBuy_3 li'), function (i,d) {   
+                                option3_index.push($(d).attr('attrvalid'));
+                            });
+
+                            console.log(option1_index)
+                            console.log(option2_index)
+                            console.log(option3_index)
+
+
+                            if (option1_index.length > 0) {
+                                all_option_index.push(option1_index)                                
+                            }
+
+                            if (option2_index.length > 0) {
+                                all_option_index.push(option2_index)  
+                            }
+
+                            if (option3_index.length > 0) {
+                                all_option_index.push(option3_index)
+                            }
+
+                            console.log(all_option_index)
+
+                            // return
                         
                             var product_data = { 
                                 md5product_id : md5product_id, 
@@ -518,7 +560,8 @@ function pageFullyLoaded(){
                                 variant_data : JSON.stringify( final_variant ),
                                 variant_images_with_sku : JSON.stringify( variant_images_with_sku ),
                                 variant_images_status : variant_images_status,
-                                product_specification : product_specification
+                                product_specification : product_specification,
+                                all_option_index : JSON.stringify( all_option_index )
                             };
         
                         noti = '<div class="notifybox"><span class="closeNotify crossBtn"><i class="fa fa-times"></i></span>';
@@ -537,7 +580,10 @@ function pageFullyLoaded(){
                             var element = document.getElementById("product-importing-notify");
                             element.parentNode.removeChild(element);
                         }
-        
+
+                        console.log( product_data )
+                        
+                        // return;
                         $.ajax({
                             url : app_url+'/product-import/import-dhgate-product.php',
                             method : 'POST',

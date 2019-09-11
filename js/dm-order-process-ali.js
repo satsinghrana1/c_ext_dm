@@ -7,7 +7,7 @@ function pageFullyLoaded(){
 
         // Aliexpress specific.
         var app_url          = 'https://app-stage.dropmarket.net';
-        var max_process_time = 180;
+        var max_process_time = 90;
 
         // Fetching animation.
 
@@ -823,7 +823,7 @@ function pageFullyLoaded(){
 
                 var url = "https://shoppingcart.aliexpress.com/api/1.0/orders.htm";
 
-                var required_data = dropm.get_required_data();     
+                var required_data = dropm_ali.get_required_data();     
                     
                 $.ajax({
                     url : url,
@@ -977,7 +977,6 @@ function pageFullyLoaded(){
         };
 
         dropm_ali.process_observer();
-
 
 
         $('.orderBtn').click(function(ev) {
