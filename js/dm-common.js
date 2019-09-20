@@ -413,9 +413,9 @@ function pageFullyLoaded(){
 
                                         variant_images_status = 1;
                                         
-                                        variant_images.push( $(li_d).attr( 'attrvalid')+'-dmDivider-'+'https:'+$(li_d).find('img').attr('src') );
+                                        variant_images.push( $(li_d).attr( 'attrvalid')+'-dmDivider-'+'https:'+$(li_d).find('img').attr('src').replace('100x100','0x0') );
 
-                                        variant_images_with_sku.push( $(li_d).attr( 'attrvalid' )+'-dmDivider-'+'https:'+$(li_d).find('img').attr('src') );
+                                        variant_images_with_sku.push( $(li_d).attr( 'attrvalid' )+'-dmDivider-'+'https:'+$(li_d).find('img').attr('src').replace('100x100','0x0') );
                                         
                                     }
 
